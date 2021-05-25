@@ -43,7 +43,9 @@ aws cloudformation create-stack --stack-name $STACKNAME --template-url https://a
 
 ## Final Step
 
-Once your CloudFormation template is deployed, go to AWS Lambda service on the console, and choose the one with the name X. On the configuration tab, select Triggers > Add Trigger. From the list click on API Gateway > Select the one with the name X and for the Security option, select Open [PIC]
+Once your CloudFormation template is deployed, go to AWS Lambda service on the console, and choose the one with the name <Your Stack Name>-Lambda-<Random String>-searchlambdacf-<Random String>. On the configuration tab, select Triggers > Add Trigger. From the list click on API Gateway > Select the one with the name search-es-api-cf. For deployment stage select search-es-api-tetst and for the Security option, select Open and then click Add:
+  
+  PIC
 
 And that's it!! You're rady to test your application. 
 
