@@ -9,7 +9,7 @@ Description
 
 ## Architecture
 
-ARCHITECTURE IMAGE AND EXPLANATION
+ARCHITECTURE IMAGE AND EXPLANATION (coming soon)
 
 ## Launch the template
 
@@ -39,7 +39,17 @@ aws cloudformation create-stack --stack-name $STACKNAME --template-url https://a
 
 ## Explore your environment
 
-EXPLAIN PROCEDURE
+(Coming soon)
+
+## Final Step
+
+Once your CloudFormation template is deployed, go to AWS Lambda service on the console, and choose the one with the name X. On the configuration tab, select Triggers > Add Trigger. From the list click on API Gateway > Select the one with the name X and for the Security option, select Open [PIC]
+
+And that's it!! You're rady to test your application. 
+
+#Test your movies search app
+
+Look for the Amazon S3 static website endpoint. Go to CloudFormation, select the recently launched template, specificly click on the nested one called <Your Stack Name>-Lambda-<Random String> and click on the Outputs tab. You'll see WebsiteURL with a link like http://search-app-<accoundID>.s3-website-eu-west-1.amazonaws.com/. Once opened, a static website like this will appear: 
 
 Cheers!!
 
