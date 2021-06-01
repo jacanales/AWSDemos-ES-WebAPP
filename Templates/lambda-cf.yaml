@@ -1,0 +1,138 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Lambda function that is going to receive the data form the API and 
+             intertact with the ES cluster. Also this template will create the
+             S3 Bucket that is going to host the static website.
+
+Parameters:
+  ESHost:
+    Description: The ES hostname
+    Type: String
+
+  ESInstanceID:
+    Description: The ID of the ES instance
+    Type: String  
+
+  LambdaRole:
+    Description: LambdaRole ARN
+    Type: String
+    
+Resources:
+  LambdaZipBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "search-app-${AWS::AccountId}"
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+  
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      PolicyDocument:
+        Id: MyPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: '*'
+            Action: 's3:GetObject'
+            Resource: !Join 
+              - ''
+              - - 'arn:aws:s3:::'
+                - !Ref LambdaZipBucket
+                - /*
+      Bucket: !Ref LambdaZipBucket
+
+  S3Paramater:
+        Type: AWS::SSM::Parameter
+        DependsOn: 
+        - LambdaZipBucket
+        Properties:
+            Name: LambdaZipBucket
+            Type: String
+            Value: !Join ['',['s3://',!Ref LambdaZipBucket]]
+            Description: SSM Parameter of S3 bucket.    
+
+  SpecificInstanceIdAssociation:
+    Type: AWS::SSM::Association
+    DependsOn: 
+    - LambdaZipBucket
+    - S3Paramater
+    Properties:     
+      Name: AWS-RunShellScript
+      Targets:
+      - Key: InstanceIds
+        Values:
+        - !Ref ESInstanceID
+
+      Parameters:
+        commands: 
+        - "curl -L https://danonbd2.github.io/AWSDemos-ES-WebAPP/my-deployment-package.zip > /tmp/my-deployment-package.zip"
+        - "aws s3 cp /tmp/my-deployment-package.zip {{ssm:LambdaZipBucket}}/"
+        - "curl -L https://danonbd2.github.io/AWSDemos-ES-WebAPP/sample-site.zip > /tmp/sample-site.zip"
+        - "unzip sample-site.zip"
+        - "cd /tmp/sample-site/scripts/"
+        - export var="{{ssm:apiUrl}}"
+        - export a="var apigatewayendpoint = '"
+        - export b="';"
+        - echo -e "$a""$var""$b""$(</tmp/sample-site/scripts/search.js)" > /tmp/sample-site/scripts/search.js
+        - cd ..
+        - cd css/
+        - aws s3 cp main.css {{ssm:LambdaZipBucket}}/
+        - cd ..
+        - cd images/
+        - aws s3 cp no-image.png {{ssm:LambdaZipBucket}}/
+        - cd ..
+        - aws s3 cp index.html {{ssm:LambdaZipBucket}}/
+        - cd scripts
+        - aws s3 cp search.js {{ssm:LambdaZipBucket}}/
+        workingDirectory:
+        - "/tmp"
+ 
+
+  searchlambdacf:
+    Type: AWS::Lambda::Function
+    DependsOn: 
+    - SpecificInstanceIdAssociation
+    Properties:
+      Runtime: python3.8
+      Role: !Ref LambdaRole
+      Handler: search-es-lambda.lambda_handler
+      Environment:
+        Variables:
+          HOST: !Ref ESHost
+      Code:
+        S3Bucket: !Ref LambdaZipBucket
+        S3Key: my-deployment-package.zip
+      Description: Lambda function to interact with ES cluster
+      TracingConfig:
+        Mode: Active
+
+  lambdaApiGatewayInvoke:
+    Type: AWS::Lambda::Permission
+    DependsOn:
+      - searchlambdacf
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref searchlambdacf
+      Principal: apigateway.amazonaws.com      
+
+Outputs: 
+  searchlambdaName:
+    Value: !Ref searchlambdacf
+
+    Export:
+        Name: !Sub "${AWS::StackName}-FunctionName"
+
+  WebsiteURL:
+    Value: !GetAtt 
+      - LambdaZipBucket
+      - WebsiteURL
+    Description: URL for website hosted on S3
+
+  searchlambdaArn:
+    Value: !GetAtt searchlambdacf.Arn   
+
+  LambdaZipBucket:
+    Value: !Ref LambdaZipBucket     
