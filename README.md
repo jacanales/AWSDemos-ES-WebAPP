@@ -49,7 +49,7 @@ And that's it!! You're rady to test your application.
 
 Look for the Amazon S3 static website endpoint. Go to CloudFormation, select the recently launched template, specificly click on the nested one called **YourStackName-Lambda-RandomString** and click on the Outputs tab. You'll see WebsiteURL with a link like **http: //search-app-accoundID-.s3-website-eu-west-1.amazonaws.com/**. Once opened, a static website like this will appear: 
 
-![Key_Pair](/images/KeyPair.png)
+![sample-site](Images/sample-site.png)
 
 Now, type the item to search for! For example, "Thor"
 
