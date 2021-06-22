@@ -1,6 +1,6 @@
 # Building a search application with Amazon ElasticSearch
 
-Description
+We will create a search application with Amazon Elasticsearch Service. Instead of using a server to host the frontend application and then authorize the server to call the Elasticsearch APIs directly and have the server send requests to Amazon ES, we're going to use Amazon API Gateway to restrict users to a subset of the Elasticsearch APIs and AWS Lambda to sign requests from API Gateway to Amazon ES.
 
 ## Requirements
 
