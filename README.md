@@ -11,6 +11,7 @@ We will create a search application with Amazon Elasticsearch Service. Instead o
 
 ![arch](Images/ES-Arch.png)
 
+What you have here is a VPC in which the Amazon EC2 instance will reside. This instance is going to add the sample movies data into the movies index in the Amazon Elasticsearch service cluster. Once the data is ready, users can access and query the data through a web form hosted on Amazon S3. The queries will go through Amazon API Gateway and pass the request to AWS Lambda function which is the only authorized entity to interact with the Amazon Elasticsearch cluster and retrieve the requested data.
 
 ## Launch the template
 
