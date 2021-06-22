@@ -9,13 +9,14 @@ We will create a search application with Amazon Elasticsearch Service. Instead o
 
 ## Architecture
 
-ARCHITECTURE IMAGE AND EXPLANATION (coming soon)
+![arch](Images/s3.png)
+
 
 ## Launch the template
 
 1. Go to Amazon S3 service on the AWS Console and make sure that you have the **Block Public Access for the Account** turned off:
 
-![sample-site](Images/s3.png)
+![S3_setting](Images/ES-Arch.png)
 
 This is needed beacuse we're going to create a public bucket to host the static website.
 
