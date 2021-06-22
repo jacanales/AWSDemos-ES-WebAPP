@@ -25,6 +25,8 @@ This is needed beacuse we're going to create a public bucket to host the static 
 
 [![Launch CFN stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://eu-west-1.console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/quickcreate?templateUrl=https://elastic-search-movies-search-app.s3-eu-west-1.amazonaws.com/Templates/main_es.yaml&stackName=search-app)
 
+**NOTE**: The template takes 30 min to deploy approx.
+
 **(Optional)** Or deploy the template with CLI:
 
 * If you don’t have the AWS CLI installed, follow [these](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) steps. And to configure the AWS CLI, follow [these](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-config). 
@@ -39,11 +41,6 @@ export STACKNAME=<THE NAME OF YOUR STACK>
 ```bash
 aws cloudformation create-stack --stack-name $STACKNAME --template-url https://elastic-search-movies-search-app.s3-eu-west-1.amazonaws.com/Templates/main_es.yaml --tags Key=project,Value=glue-project --profile $AWSPROFILE --region=$AWSREGION --capabilities CAPABILITY_IAM
 ```
-*NOTE*: The template takes 30 min to deploy approx.
-
-## Explore your environment
-
-(Coming soon)
 
 # Test your movies search app
 
