@@ -15,7 +15,7 @@ ARCHITECTURE IMAGE AND EXPLANATION (coming soon)
 
 1. Go to Amazon S3 service on the AWS Console and make sure that you have the **Block Public Access for the Account** turned off:
 
-![sample-site](Images/sample-site.png)
+![sample-site](Images/s3.png)
 
 This is needed beacuse we're going to create a public bucket to host the static website.
 
