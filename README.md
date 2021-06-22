@@ -4,7 +4,7 @@ We will create a search application with Amazon Elasticsearch Service. Instead o
 
 ## Requirements
 
-* **AWS Account:** If you don’t have an account nor an account provided to you, [click here](https://aws.amazon.com/es/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc).
+* **AWS Account:** If you don’t have an account nor an account provided to you, [click here](https://aws.amazon.com/es/free/).
 * **Text editor (optional):** Just to make things easier and more organised.
 
 ## Architecture
@@ -15,7 +15,7 @@ What you have here is a VPC in which the Amazon EC2 instance will reside. This i
 
 ## Launch the template
 
-1. Go to Amazon S3 service on the AWS Console and make sure that you have the **Block Public Access for the Account** turned off:
+1. Go to Amazon S3 service on the AWS Console and make sure that you have the **Block Public Access for the Account** turned off. This is only for Demo purposes and you should **NOT** do this in your production account.
 
 ![S3_setting](Images/s3.png)
 
@@ -44,7 +44,7 @@ aws cloudformation create-stack --stack-name $STACKNAME --template-url https://e
 
 # Test your movies search app
 
-Look for the Amazon S3 static website endpoint. Go to CloudFormation, select the recently launched template, specificly click on the nested one called **YourStackName-Lambda-RandomString** and click on the Outputs tab. You'll see WebsiteURL with a link like **http: //search-app-accountID-.s3-website-eu-west-1.amazonaws.com/**. Once opened, a static website like this will appear: 
+Look for the Amazon S3 static website endpoint. Go to CloudFormation, select the recently launched template, click on the nested one called **YourStackName-Lambda-RandomString** and click on the Outputs tab. You'll see WebsiteURL with a link like **http://search-app-accountID-.s3-website-eu-west-1.amazonaws.com/**. Once opened, a static website like this will appear: 
 
 ![sample-site](Images/sample-site.png)
 
